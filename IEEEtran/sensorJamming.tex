@@ -368,21 +368,20 @@ There are various ways in which a sensor can be jammed. Because of this jamming 
 
 \end{description}
 
-
-
 \section{Related/Previous Works}
-Orient readers with most relevant studies. \\
-Explain how it's related to our approach\\
-How our Study builds upon previous works.\\
-There have been numerous studies on sensory jamming within autonomous technology. 
-Three of the top studies include, frequency/channel hopping, signal verification algorithms, 
-and filtering of the jamming signals. Each is discussed further below.\\
+There have been numerous studies on sensory jamming within autonomous technology. Three of the top studies include, frequency/channel hopping, signal verification algorithms, and filtering of the jamming signals. Each is discussed further below.\\
 
-\section{Problem Overview}
+\textit{Signal Verification Protocol and Algorithms} is a key way to detect anomalies within the sensors. To find these anomalies the signal to noise ratio(SNR) can be used. A deviation in normal SNR will cause sensors to malfunction. Kar et al.\cite{6} implement a low cost jammer identification device that can detect jammers. Using smartphones, interfering signals can were detected and were able to track the movement of the jammer using roadside cameras. This method can help track and stop the incoming jamming signals. This research also strategically placed GPS locators along the highway to track and locate the jamming devices\cite{6}. The ability to track down the jamming signals can help identify and stop the adversary.\\ 
+\textit{Frequency Hopping} is used in wireless communication that allows radio signals to constantly switch the operating frequency channels. Frequency hopping(FH) can aid in mitigating jamming by evading the attacker and preventing them from knowing which frequency channel a sensor is operating on. FH can make it much more difficult for the attacker to know the frequency band to attack\cite{1}\cite{3}\cite{2}. Research shows that that a short duration time between channels can help reduce the impact on inference\cite{1}. This is important to our study because wireless technology will be needed in autonomous vehicles. Being able to avoid or mitigate the effects of jamming devices, will greatly improve the well being of anyone who used autonomous vehicles. Making sure autonomous vehicles are able to freely communicate without flaw is crucial.\\ 
+\textit{Filtering of the Jamming Signals} Filtering and extraction techniques can be used to reduce the effects of sensor jamming\cite{5}.  Jamming signals can be filtered or extracted out with either a low-pass filter or an excision filter.  An excision filter removes a signal if its bandwidth is smaller then the signal bandwidth and a low-pass filter removes jamming signals wider than the sensor's signals bandwidth\cite{5}. These methods of mitigating jamming attacks are typically used in conjunction with other techniques such as frequency hopping\cite{5}.\\
+
+\section{Problem Overview} Since the beginning years of technology, cyber security experts and hackers have been fighting to gain control. When it comes to autonomous vehicle technology, safety and security are a serious concern. If hackers were to gain control of an autonomous vehicle, passenger and pedestrian safety will be greatly at risk. It is essential for autonomous technology to be attack resistant in order to create a safe mode of transportation and to establish consumer confidence. This paper focuses on autonomous vehicle sensors and their susceptibility to jamming. Jammers are capable of fooling or completely blocking the signals needed for the sensor to work properly. This is particularly dangerous when it comes to autonomous vehicles because a car can be rendered invisible to other cars. Since sensor jamming can cause dangerous conditions it is crucial to mitigate the effects of jamming.\\
+
 \subsection{Problem Statement}
+With the rise of autonomous technology sensors play a crucial role in the proper functioning of the technology. Sensors are susceptible to jamming causing potential danger to the passengers(s) or any surroundings. Sensors must function effectively while also actively preventing malicious attacks at all times in order to mitigate and avoid the dangers of jamming.\\
 \subsection{Challenges of the Problem}
-\subsubsection{Adversary Goals and Capabilities}
-**Unsure where to fit this in as of now, maybe won't need it's own section**
+Detecting sensor jamming is not trivial and has many fallbacks.  Sensor jamming is a serious threat that can affect all sensors. Detecting an ongoing attack as soon as possible will mitigate the dangerous of jamming.  There are many different methods to help mitigate the effects of sensor jamming but what are the best method(s)?  Do we use a combined approach? Using signal verification alone has many drawbacks.  Jamming detection is easily susceptible to false positives and the algorithms used are not enough to detect all types of jamming\cite{6}\cite{7}.  Filtering and extracting signals has it?s own downfalls. A jammer can easily observe the signals bandwidth so it can bypass an excision and low-pass filters. Filtering and extracting signals is best used alongside frequency hoping\cite{4}\cite{5}. Frequency hopping is not yet sophisticated enough to thoroughly prevent jamming. Frequency hopping can easily be worked around if enough jammers are set up. Switching between frequencies can reduce the devices performance [5][6][8]. The previously mentioned techniques when used alone may not be enough to stop a jamming attack but when used together a jamming attack can be tracked and mitigated much more reliably. \\
+
 \section{Our Contribution}
 \subsection{Research Goals for Solutions}
 1. Detect when sensor is being jammed
@@ -399,24 +398,53 @@ and filtering of the jamming signals. Each is discussed further below.\\
 \section{Jamming Detection and Mitigation Techniques}
 Description of different types of jamming detection and prevention from research. How we were able to simulate or evaluate it's effectiveness.
 \subsection{Group Experimentation and Testing}
-\subsubsection{Proof of Concept}
 \subsubsection{Computer Experiment}
+
+We needed to find out that we could create measurable interference with the tools that we had. Considering that ultrasonic sensors in vehicles are not very different from sensors that could be purchased for testing platforms such as Arduino, we decided to make a small experiment for proof that it would work. If successful in this attempt, knowledge gained for subsequent testing could prove useful.
+
 \subsubsection{Setup}
+
+To test our setup, we purchased two Arduino Uno boards, two breadboards, a set of cables, and two HC-SR04 Ultrasonic sensors. The first step was to create a small program to run on the Arduino that gave an output in inches, so that we could stream our output in readable data. This program to run the sensor and convert the output was uploaded onto both Arduino boards and set to loop indefinitely. Test one was simply to ensure the sensor was accurate and that the program ran as intended. One of the HC-SR04 units, connected to an Arduino was placed 13 inches from a box large enough to be hit by the ultrasonic sound waves and bounce back to the unit. This Uno unit was also connected to a computer, which displayed its output of inches live by running a very simple python program that logged the results in the python console as they were made available.  \\
+Next, we wanted to ensure that we could be \textit{jammed}. To do this, we kept the same setup as the previous test, but introduced the second Arduino and HC-SR04 where the box was, aiming the output of the sensor towards the sensor connected to the computer. 
+
 \subsubsection{Results}
+
+For the first test, we were able to prove the correctness of our program and the accuracy of the sensor unit. The accuracy was determined to be $\pm 0.04$ inches. Example outputs from the python console were: $12.96, 12.96, 13.00, 13.01$ \\
+Following the confirmation above, we setup the second test as described. The results were as expected. Since ultrasonic sensors work by pulsing a wave, bouncing it off the object and receiving it back - all while counting the time that it takes to do so, we expected the output to be halved. This is because the matching unit placed across from the one connected to the computer was emitting the same frequency at the same time. So while the wave from the unit logging was being sent, an opposing wave was also being sent. When received by the unit logging the distance, it was indiscriminately halving the distance because the signal was being received sooner than expected. Example outputs from the python console were: $6.48, 6.31, 6.49$
+\subsubsection{Proof of Concept}
+
+Now that we understood that simply pointing a sensor on or near the same frequency as the one being relied upon at it could considerably reduce the accuracy, we wanted to see if it would work on a vehicle.
+
+\subsubsection{Setup}
+
+We used the first vehicle available to us with ultrasonic sensors. It was a 2016 GMC Sierra that had an array of 4 ultrasonic sensors placed in its rear bumper as part of the backup collision warning system. Our goal was to see if we could manipulate the sensor into either seeing something that didn't exist or to hide something that was actually in the path of the vehicle. We used the same sensor as in test one in the previous section and placed it on a large metal folding chair behind the vehicle, roughly 4 feet from the leftmost rear sensor in the bumper. We raised our jamming sensor even more with cardboard to make it level with the sensor on the vehicle. With the jamming sensor turned off, we turned on the vehicle and placed it in reverse. Immediately the collision warning system produced an alert, and properly identified the chair behind the vehicle. We then turned on our jamming sensor and tried moving it around behind the vehicle, to see if any one position worked better than others.
+
+\subsubsection{Results}
+
+After a few attempts, we were able to hide the chair from the collision avoidance system. With the jamming sensor behind the vehicle 4ft and to the left of the rear bumper turned towards it by $10^{\circ}$, the system never alerted us of the chair's presence. Further backing up during that attempt allowed us to almost drive into the chair with no warning. \\
+As it did take a few tries to get right, this was proof enough for us to look into ways to prevent such jamming, even if it happened on occasion. A realistic situation may even be two cars equipped with ultrasonic backup sensors backing up towards each other in a crowded parking lot. It was time to study ways of preventing this.
 \subsection{Frequency Hopping}
-\textit{Frequency Hopping}(FH) is the process by which the sensor continuously changes or 'hops' the frequency channel signals are being sent or received on. Hopping patterns will be unknown to attackers and likely unpredictable as well\cite{5}. If FH is happening quickly, jamming devices will be unable to react quickly enough to match to the current operating frequency, thus evading any jammers that were scanning the sensor such as reactive jammers\cite{5}.\\
 \indent FH can also help prevent jamming that happens when there is 'cross-talk' between sensors. This occurs when sensors of the same type, operating on the same frequency are close enough that they are sending signals to or receiving signals from the nearby sensors accidentally\cite{3}. This causes sensors to receive false data or accidentally jam other sensors. If these near-by sensors have signals FH enough it is unlikely they would interfere with each other. Meng. et. al. proposes a strategy to mitigate this type of jamming by transmitting ultrasonic signals in pseudo-random pulses within varying frequencies. The sensor then waits on an expected, returned signal corresponding to the pseudo-random pulse and frequency that was sent out\cite{3}.
-\subsection{Signal Verification Algorithms}
--How is it detected
--How do we mitigate
--does sensor continue to function?
+\subsection{Signal Verification Protocols and Algorithms}
+Verification protocols and algorithms can be implemented on different types of sensors in order to detect and identify if a jamming attack is taking place. Once detected, action can be taken to evade the attack. Measurements are taken on signal communication as part of these protocols or algorithms in order to detect any irregularities in signal traffic. Different protocols or algorithms will take into account different metrics or variables involved in signal communication in order to determine irregular behavior\cite{7}. Much of the difficulty in detecting jamming is due to sensors being unable to differentiate between legitimate signal traffic and attacker interference.[w.XU]. This section will discuss several different types of jamming detection methods utilizing verification protocols or algorithms. 
+
 \subsubsection{Signal to Noise Ratio}
-\subsubsection{Send to Delivery Ratio}
+A widely used metric for sensors monitoring data is the \textit{signal to noise ratio}(SNR). This measures the expected signal strength level in relation to a normal baseline of background noise for signal communication traffic. In other words, SNR will show signal power to noise power. Noise can be considered any signal traffic being picked up by the sensor that is not the desired send or receive signal of the sensor. \\
+\indent A sensor can use SNR in order to detect jamming traffic. Sensors will likely have a range of SNR that is normal and used as a baseline when monitor signal traffic. If there is a deviation away from the expected range of SNR, this could indicate to the sensor that there is a jamming attack taking place. A deviation could mean there is a higher than normal amount of real signal traffic, which could be a jammer sending 'legitimate' signals, like in a deceptive jamming attack. Alternatively, a deviation away from the expected SNR could be due to a jamming attack that is appearing as 'noise' to the sensor. In either case, there will be a deviation away from the expected SNR and this will be viewed as a signal traffic anomaly to the sensor \cite{6}. 
+%picture%
+\indent Kar et. al. discusses how SNR can be used to detect anomalies in signal traffic that could indicate a jamming attack is taking place\cite{6}. This research focuses on GPS technology but the concept is applicable to many different sensor types. This work discusses the difficulty in differentiating SNR deviations from \textit{signal fading}. Fading occurs when there is a variation in the intensity, or attenuation of a signal due to variables like location or radio frequency. This research demonstrates that SNR or \textit{signal-to-interference-plus-noise density ratio}(SINR) will decrease if there is an increase interference or signal fading occurs\cite{6}. In order to get around impacting the SNR or SINR and alerting the sensor to a potential attack, the goal of a jammer, among other aspects, should be to reduce any interference or noise caused during an attack so as not to be detected\cite{13}. 
+%picture%
+\subsubsection{Packet Send and Delivery Ratio}
+A sensor can use \textit{packet send ratio}(PSR) and \textit{packet delivery ratio}(PDR) as a means of detecting a jamming attack\cite{12}. An attacker can attempt to jam a sensor by preventing it from sending signals as well as corrupting or destroying signals in transmission\cite{12}\cite{7}. Measuring PSR and PDR is a useful metric to detect jamming during these types of attacks. From the sender point of view, the number of packets sent during a specified amount of time will determine the PSR. The PDR can be calculated by the sensor based on the number of signals sent and the number of response signals it receives back. For both PSR and PDR, a baseline will be established during a set time frame to determine normal ratio ranges. \\
+\indent A lower PSR will be a good indicator of a jammer blocking a sensor from sending signals. An decrease in PDR can be an indication of signals being corrupted during transmission. Alternatively, an increase in PDR can indicate that there are interfering signals being sent to the sensor. PSR and PDR essentially let a sensor know if signals are being sent and received at the rate they should be were a jammer not present\cite{12}\cite{7}. Combined with PDR signal strength consistency checks can be used\cite{7}. High signal strength measurements should correspond to high PDR. However, if there were a high signal strength measurement and low PDR or vice versa, this could indicate that interference is taking place\cite{7}.
 \subsubsection{Measuring Signal Strength}
-\subsection{Filtering Techniques}
--How is it detected
--How do we mitigate
--does sensor continue to function?
+A method to detect jamming that is often employed by sensors is measuring signal strength\cite{12}. By gathering enough data on normal signal strength measurements, a sensor can create a statistical model of normal signal levels and traffic\cite{7}. Previous studies measure signal strength by measuring the average signal magnitude on a sensor's operating frequency spectrum as well as calculating signal threshold from ambient noise levels, which is somewhat similar to the concept behind SNR measurements, and determining the shape of a normal signal spectrum\cite{12}\cite{7}. These methodologies run into difficulties making determinations between a harmless increase in signal traffic and an actual jamming attack. 
+\subsection{Filtering and Extraction Techniques}
+Filtering the bandwidth a sensor is operating on can potentially filter or extract out interfering signals from jamming attacks. In \cite{5} different types of filters are used in the sensor's frequency bandwidth that attempt to remove jamming signals.
+An \textit{excision filter} can be employed on the signal bandwidth that suppresses interfering signals smaller than the signal's bandwidth. The excision filter is smaller than the sensor's bandwidth and it attempts to filter out narrowband interference. The filter essentially removes the signal power of the jammer\cite{5}. %photo%
+A \textit{low-pass filter} can be implemented to combat a jamming signal that is wider than the sensor's operating signal frequency spectrum. This removes any power to jamming signals that are outside of the operating frequency of the sensor. However, the resulting jamming signal is now the same bandwidth as the sensor's bandwidth. 
+%photo%
+While both of these filter types can contribute to lessening the power of a jammer, when used alone they do not do much to mitigate the impact of a jamming device. In \cite{5} the use of these filters also requires that the signal frequency is constantly hopping when in use, in order to evade the jammer. 
 \section{Security Analysis}
 \subsection{Feasibility}
 \subsection{Scalability}
